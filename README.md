@@ -15,7 +15,7 @@ Headless background `systemd --user` service and CLI control wrapper (`torctl`) 
 
 ## Quick Install
 ```bash
-git clone https://github.com
+git clone https://github.com/avsprv/tbb-tor-service.git
 cd tbb-tor-service
 ./setup-tbb-tor.sh
 source ~/.bashrc.d/tbb-tor.sh
