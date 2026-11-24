@@ -70,8 +70,8 @@ torctl country auto
 torctl exitlist 185.220.101.1
 
 # Run any CLI tool through Tor
-withtor curl -s https://ifconfig.me
-withtor git clone https://github.com
+withtor curl -s https://ifconfig.me/all
+withtor git clone https://github.com/avsprv/tbb-tor-service.git
 ```
 
 ## Uninstall
