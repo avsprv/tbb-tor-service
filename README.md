@@ -1,3 +1,26 @@
+# tbb-tor-service
+
+Headless background `systemd --user` service and CLI control wrapper (`torctl`) that reuses Tor Browser's `tor` and `lyrebird` binaries (WebTunnel / obfs4 bridges) to provide a local SOCKS5 proxy at `127.0.0.1:9050` without keeping the browser window open.
+
+## Features
+- **Zero-conflict background daemon:** Runs on `127.0.0.1:9050` with isolated `DataDirectory`, allowing Tor Browser to run simultaneously on `127.0.0.1:9150`.
+- **Automatic bridge sync:** Symlinks `torrc` directly from Tor Browser.
+- **Modular shell integration:** Installs `torctl`, `withtor` alias, and bash completion into `~/.bashrc.d/tbb-tor.sh` without modifying `~/.bashrc`.
+- **Exit node & API tools:** Rotate exit IPs (`newip`), lock exit countries (`country`), check bulk exit lists, and query relay details via Onionoo API.
+
+## Requirements
+- Linux with `systemd` user session
+- Installed [Tor Browser](https://torproject.org) (launched at least once to generate `torrc` and configure bridges)
+- `curl`, `bash`, `python3` (optional, for formatted Onionoo output)
+
+## Quick Install
+```bash
+git clone https://github.com<YOUR_USERNAME>/tbb-tor-service.git
+cd tbb-tor-service
+./setup-tbb-tor.sh
+source ~/.bashrc.d/tbb-tor.sh
+```
+
 ## Usage
 
 ### Service Management
