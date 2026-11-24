@@ -20,32 +20,43 @@ cd tbb-tor-service
 ./setup-tbb-tor.sh
 source ~/.bashrc.d/tbb-tor.sh
 ```
-## Usage:
+## Usage
+
+### Service Management
+
+| Command | Description |
+| :--- | :--- |
+| `torctl start` | Start the background Tor service |
+| `torctl stop` | Stop the background Tor service |
+| `torctl restart` | Restart the service (use after updating bridges in Tor Browser) |
+| `torctl status` | Show `systemd` service status |
+| `torctl newip` (`reload`) | Request a new exit node IP without dropping bridge connections |
+| `torctl country [code\|auto]` | Show or set exit node country (e.g. de, nl,fi, or auto) |
+| `torctl check` | Verify SOCKS5 proxy connectivity and print current exit IP |
+| `torctl logs [N]` | Show last `N` log lines (default: `25`) |
+| `torctl follow` | Stream live logs (`Ctrl+C` to exit) |
+| `torctl uninstall` (`remove`) | Completely remove the service, data directory, and shell helpers |
+| `torctl help` | Show the CLI help message |
+
+### Exit Lists & Network API
+
+| Command | Description |
+| :--- | :--- |
+| `torctl exitlist [IP]` | Download `torbulkexitlist` or check if a specific IP is an exit node |
+| `torctl exitaddrs [filter]` | Download `exit-addresses` (with fingerprints) or filter by IP/ID |
+| `torctl relay [IP\|fingerprint]` | Query Onionoo API for relay details (alias: `onionoo`, defaults to current exit IP) |
+
+### Examples & Proxy Endpoint
+
+The service exposes a local **SOCKS5 / SOCKS5h** proxy at `127.0.0.1:9050`. You can route any CLI tool through Tor using the `withtor` helper alias:
+
 ```bash
-  torctl <command> [arguments]
+# Check your current Tor exit IP
+torctl check
 
-Service Management:
-  start                            Start the background Tor service
-  stop                             Stop the background Tor service
-  restart                          Restart the service (use after updating bridges in Tor Browser)
-  status                           Show systemd service status
-  newip | reload                   Request a new exit node IP without dropping bridge connections
-  country [code|auto]              Show or set exit node country (e.g., de, nl,fi, or auto)
-  check                            Verify SOCKS5 proxy connectivity and print current exit IP
-  logs [N]                         Show last N log lines (default: 25)
-  follow                           Stream live logs (Ctrl+C to exit)
-  uninstall | remove               Completely remove the service, data directory, and shell helpers
-  help                             Show this help message
+# Lock exit nodes to Germany or Netherlands
+torctl country de,nl
 
-Tor Exit Lists & Network API:
-  exitlist [IP]                    Download torbulkexitlist or check if a specific IP is an exit node
-  exitaddrs [filter]               Download exit-addresses (with fingerprints) or filter by IP/ID
-  relay | onionoo [IP|fingerprint] Query Onionoo API for relay details (defaults to current exit IP)
-
-Proxy Endpoint:
-  SOCKS5 / SOCKS5h:                127.0.0.1:9050
-
-Alias:
-  withtor <cmd>                    Run any CLI command with ALL_PROXY/HTTP_PROXY set to Tor
-                                   Example: withtor curl -s https://ifconfig.me
+# Run any command through Tor (sets ALL_PROXY and HTTP_PROXY)
+withtor curl -s https://ifconfig.me
 ```
